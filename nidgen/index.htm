@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>NID Generator</title>
+</head>
+
+<body>
+<script language="javascript">
+var UINT32_MAX = 4294967296;
+
+function LW_Perepolnenie(value) {
+    var result = value;
+
+    if (value > UINT32_MAX) {
+        var modificator = Math.floor(value / UINT32_MAX);
+        result = value - (UINT32_MAX * modificator);
+    }
+
+    return result;
+}
+
+function Name2NID(Name) {
+    var Format = 1000000000;
+    var PreNID = 0;
+    var UCName = Name.toUpperCase();
+    var temp = 0;
+
+    for (var i = 1; i <= Name.length; i++) {
+        var CurrChar = UCName.charAt(i - 1);
+        temp = LW_Perepolnenie(Math.round(Math.pow(5, Name.length - i)));
+        temp = LW_Perepolnenie(CurrChar.charCodeAt(0) * temp);
+        PreNID = LW_Perepolnenie(PreNID + temp);
+    }
+
+    if (PreNID > Format) {
+        var modificator = Math.floor(PreNID / Format);
+        PreNID = PreNID - (Format * modificator);
+    }
+
+    return PreNID + Format;
+}
+
+function getNid() {
+    document.nidgen_form.NID.value = Name2NID(document.nidgen_form.NPC.value);
+}
+</script>
+
+<h1>Evil Islands. NID Generator</h1>
+
+<form name="nidgen_form">
+<table>
+<tr><td>NPC name:</td><td><input type=edit name="NPC" value="" maxlength=28></td>
+<tr><td>NID:</td><td><input type=edit name="NID" readonly></td>
+</table>
+<input type=button name="Generate" value="Generate" onclick="javascript:getNid()">
+</form>
+
+</br></br><hr/>
+<p><i>Forked <a href="http://eijokes.narod.ru/scripting/nid_gen.htm">from here.</a></i></p>
+
+</body>
+</html>
