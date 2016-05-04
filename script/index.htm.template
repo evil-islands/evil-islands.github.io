@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>Скрипты - Evil Islands</title>
+  <link href="/style.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 20px 20px 20px 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="markdown-body">
+<!-- MDGIST: evilislands/d10453949cf3f8150f7b29019f6403df -->
+</div>
+</body>
+</html>
