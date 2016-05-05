@@ -2,19 +2,19 @@
 <html>
 <head>
   <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NID Generator - Evil Islands</title>
+  <link href="/style.css" rel="stylesheet">
 </head>
-
 <body>
 
+<h1>Evil Islands: NID Generator</h1>
 <noscript>Enable javascript to use NID Generator.</noscript>
 
 <script language="javascript">
-var UINT32_MAX = 4294967296;
-
-function LW_Perepolnenie(value) {
+function uintOverflow(value) {
+    var UINT32_MAX = 4294967296;
     var result = value;
-
     if (value > UINT32_MAX) {
         var modificator = Math.floor(value / UINT32_MAX);
         result = value - (UINT32_MAX * modificator);
@@ -23,33 +23,30 @@ function LW_Perepolnenie(value) {
     return result;
 }
 
-function Name2NID(Name) {
-    var Format = 1000000000;
-    var PreNID = 0;
-    var UCName = Name.toUpperCase();
-    var temp = 0;
-
-    for (var i = 1; i <= Name.length; i++) {
-        var CurrChar = UCName.charAt(i - 1);
-        temp = LW_Perepolnenie(Math.round(Math.pow(5, Name.length - i)));
-        temp = LW_Perepolnenie(CurrChar.charCodeAt(0) * temp);
-        PreNID = LW_Perepolnenie(PreNID + temp);
+function nameToNid(name) {
+    var nidHash = 0;
+    name = name.toUpperCase();
+    for (var i = 1; i <= name.length; i++) {
+        var ch = name.charCodeAt(i - 1);
+        var temp = 0;
+        temp = uintOverflow(Math.round(Math.pow(5, name.length - i)));
+        temp = uintOverflow(ch * temp);
+        nidHash = uintOverflow(nidHash + temp);
     }
 
-    if (PreNID > Format) {
-        var modificator = Math.floor(PreNID / Format);
-        PreNID = PreNID - (Format * modificator);
+    var nidBase = 1000000000;
+    if (nidHash > nidBase) {
+        var modificator = Math.floor(nidHash / nidBase);
+        nidHash -= nidBase * modificator;
     }
 
-    return PreNID + Format;
+    return nidHash + nidBase;
 }
 
 function getNid() {
-    document.nidgen_form.NID.value = Name2NID(document.nidgen_form.NPC.value);
+    document.nidgen_form.NID.value = nameToNid(document.nidgen_form.NPC.value);
 }
 </script>
-
-<h1>Evil Islands: NID Generator</h1>
 
 <form name="nidgen_form">
 <table>

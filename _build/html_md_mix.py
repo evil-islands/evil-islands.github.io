@@ -7,7 +7,16 @@ class HtmlRenderer(mistune.Renderer):
 
     def header(self, text, level, raw=None):
         def text_to_id(text):
-            return text.replace(" ", "-").replace(",", "")
+            text = text.replace(" ", "-")
+            result = ""
+            for c in text:
+                if c.isalnum() or c in ['-', '_']:
+                    if ord(c) < 128:
+                        result += c.lower()
+                    else:
+                        result += c
+
+            return result
         return '<h%d id="%s">%s</h%d>\n' % (level, text_to_id(raw), text, level)
 
 def gist_replace(md_parser, text):
